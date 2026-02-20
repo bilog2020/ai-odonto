@@ -1,0 +1,22 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.db
+appsettings.Development.json
+
+# Node / React Native
+mobile/node_modules/
+mobile/.expo/
+mobile/dist/
+
+# IDE
+.vs/
+.vscode/
+*.swp
+
+# Secrets
+*.env
+appsettings.*.json
+!appsettings.json

@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/AiOdonto.Api/AiOdonto.Api.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AiOdonto.Api.Tests/AiOdonto.Api.Tests.csproj" />
+  </Folder>
+</Solution>
