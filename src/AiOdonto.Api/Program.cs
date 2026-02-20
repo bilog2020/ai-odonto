@@ -81,6 +81,7 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<DocumentService>();
 builder.Services.AddScoped<ChatService>();
 builder.Services.AddScoped<AuditService>();
+builder.Services.AddScoped<PromptService>();
 
 // Controllers
 builder.Services.AddControllers();
