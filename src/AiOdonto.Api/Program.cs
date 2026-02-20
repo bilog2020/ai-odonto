@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.SemanticKernel;
 using Serilog;
 using AiOdonto.Api.Data;
 using AiOdonto.Api.Services;
@@ -63,6 +64,17 @@ builder.Services.AddHttpClient<IEmbeddingService, VoyageEmbeddingService>(client
 
 builder.Services.AddSingleton<TextChunker>();
 builder.Services.AddScoped<DocumentIngestionService>();
+
+// Semantic Kernel with Claude
+var kernelBuilder = Kernel.CreateBuilder();
+kernelBuilder.AddOpenAIChatCompletion(
+    modelId: "claude-sonnet-4-20250514",
+    apiKey: builder.Configuration["Anthropic:ApiKey"] ?? string.Empty,
+    endpoint: new Uri("https://api.anthropic.com/v1/")
+);
+var kernel = kernelBuilder.Build();
+builder.Services.AddSingleton(kernel);
+builder.Services.AddScoped<ILlmService, ClaudeLlmService>();
 
 // Services
 builder.Services.AddScoped<AuthService>();

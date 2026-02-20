@@ -35,12 +35,15 @@ public class AuthTestFactory : WebApplicationFactory<Program>
             services.AddDbContext<AppDbContext>(options =>
                 options.UseInMemoryDatabase(_dbName));
 
-            // Stub unimplemented services so the app can start
+            // Stub services that depend on external APIs
             var vectorMock = new Mock<IVectorSearchService>();
             vectorMock.Setup(x => x.SearchAsync(It.IsAny<string>(), It.IsAny<int>()))
                 .ReturnsAsync(new List<DocumentChunk>());
             services.AddScoped(_ => vectorMock.Object);
 
+            // Remove real ILlmService and replace with stub
+            var llmDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(ILlmService));
+            if (llmDescriptor != null) services.Remove(llmDescriptor);
             var llmMock = new Mock<ILlmService>();
             llmMock.Setup(x => x.GenerateResponseAsync(
                     It.IsAny<string>(), It.IsAny<List<ChatMessage>>(),
