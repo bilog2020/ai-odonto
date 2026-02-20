@@ -1,0 +1,28 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=AiOdonto;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=true
+      - Jwt__Key=DevOnlyKey_ChangeInProduction_MustBe32Chars!!
+      - Jwt__Issuer=AiOdonto.Api
+      - Jwt__Audience=AiOdonto.Client
+      - Anthropic__ApiKey=${ANTHROPIC_API_KEY}
+      - VoyageAi__ApiKey=${VOYAGE_API_KEY}
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd
+    ports:
+      - "1433:1433"
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "YourStrong!Passw0rd" -C -Q "SELECT 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
