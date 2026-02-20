@@ -5,8 +5,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using AiOdonto.Api.Data;
+using AiOdonto.Api.Models;
 using AiOdonto.Api.Models.Dto;
+using AiOdonto.Api.Services;
 
 namespace AiOdonto.Api.Tests.Controllers;
 
@@ -31,6 +34,19 @@ public class AuthTestFactory : WebApplicationFactory<Program>
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseInMemoryDatabase(_dbName));
+
+            // Stub unimplemented services so the app can start
+            var vectorMock = new Mock<IVectorSearchService>();
+            vectorMock.Setup(x => x.SearchAsync(It.IsAny<string>(), It.IsAny<int>()))
+                .ReturnsAsync(new List<DocumentChunk>());
+            services.AddScoped(_ => vectorMock.Object);
+
+            var llmMock = new Mock<ILlmService>();
+            llmMock.Setup(x => x.GenerateResponseAsync(
+                    It.IsAny<string>(), It.IsAny<List<ChatMessage>>(),
+                    It.IsAny<List<DocumentChunk>>(), It.IsAny<string>()))
+                .ReturnsAsync("stub response");
+            services.AddScoped(_ => llmMock.Object);
         });
     }
 

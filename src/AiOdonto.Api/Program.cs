@@ -67,6 +67,7 @@ builder.Services.AddScoped<DocumentIngestionService>();
 // Services
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<DocumentService>();
+builder.Services.AddScoped<ChatService>();
 
 // Controllers
 builder.Services.AddControllers();
