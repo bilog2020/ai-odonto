@@ -80,6 +80,7 @@ builder.Services.AddScoped<ILlmService, ClaudeLlmService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<DocumentService>();
 builder.Services.AddScoped<ChatService>();
+builder.Services.AddScoped<AuditService>();
 
 // Controllers
 builder.Services.AddControllers();
