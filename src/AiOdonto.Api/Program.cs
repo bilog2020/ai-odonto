@@ -53,6 +53,17 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
+// Voyage AI Embedding Service
+builder.Services.AddHttpClient<IEmbeddingService, VoyageEmbeddingService>(client =>
+{
+    client.BaseAddress = new Uri("https://api.voyageai.com/");
+    client.DefaultRequestHeaders.Add("Authorization",
+        $"Bearer {builder.Configuration["VoyageAi:ApiKey"]}");
+});
+
+builder.Services.AddSingleton<TextChunker>();
+builder.Services.AddScoped<DocumentIngestionService>();
+
 // Services
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<DocumentService>();
