@@ -17,8 +17,18 @@
 ### Backend
 
 ```bash
+# 1. Crear appsettings.Development.json con las API keys (nunca se sube a git)
+# src/AiOdonto.Api/appsettings.Development.json
+{
+  "Anthropic": { "ApiKey": "sk-ant-..." },
+  "VoyageAi": { "ApiKey": "pa-..." }
+}
+
+# 2. Crear la base de datos
 cd src/AiOdonto.Api
-# Configurar appsettings.json con las API keys
+dotnet ef database update
+
+# 3. Arrancar la API
 dotnet run
 ```
 
