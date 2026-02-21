@@ -77,6 +77,7 @@ builder.Services.AddSingleton(kernel);
 builder.Services.AddScoped<ILlmService, ClaudeLlmService>();
 
 // Services
+builder.Services.AddScoped<IVectorSearchService, VectorSearchService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<DocumentService>();
 builder.Services.AddScoped<ChatService>();
